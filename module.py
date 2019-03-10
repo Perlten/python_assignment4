@@ -18,16 +18,18 @@ def getData():
 
 
 def createDataFramePlot(values, index, label=None, plt_type="line",
-                        style="", x_label="", y_label="", title=""):
+                        style="", x_label="", y_label="", title="", fill=False):
     plt.figure()
     for values in values:
         #Creates a pandas Series
         se = pd.Series(values, index=index)
+        if fill:
+            se = se.ffill()
         ax = se.plot(style=style, kind=plt_type,
                      title=title)
         ax.set_xlabel(x_label)
         ax.set_ylabel(y_label)
-        # set x ticks as the same size as index
+        # set x ticks to the same size as index
         ax.set_xticks(range(len(index)))
         ax.set_xticklabels(index, rotation=90)
         if label:
@@ -38,14 +40,14 @@ def createDataFramePlot(values, index, label=None, plt_type="line",
 # ----------------------------------------------------------------------------------------
 # CODE BELOW IS THE SAME AS IN JUPYTER NOTEBOOK!  
 
-# data, contries_names = getData()
+data, contries_names = getData()
 
 # # Part 1
-# c_data = data.loc[(data["Country Name"].isin(
-#     ["Argentina", "United States", "Venezuela, RB", "Denmark"]))]
-# c_data = c_data.iloc[:, 4:]
-# label = [contries_names[x] for x in c_data.index]
-# createDataFramePlot(c_data.values, c_data.columns, label, style="o-")
+c_data = data.loc[(data["Country Name"].isin(
+    ["Argentina", "United States", "Venezuela, RB", "Denmark"]))]
+c_data = c_data.iloc[:, 4:]
+label = [contries_names[x] for x in c_data.index]
+createDataFramePlot(c_data.values, c_data.columns, label, style="o-")
 
 
 # Part 2
